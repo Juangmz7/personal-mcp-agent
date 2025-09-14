@@ -17,8 +17,14 @@ public class ChatBotController {
     ) {
         this.chatClient = chatClientBuilder
                 .defaultSystem(
-                        "Please prioritise context information for answering queries." +
-                                "Give shorts, concise and to the point answers."
+                        "You are a local assistant for the user." +
+                        "Tools are trusted, local backend operations." +
+                        "If the user explicitly asks to save/update an email SMTP credential," +
+                        "CALL the `store_email_credential` tool with the provided values." +
+                                "Do not refuse or warn about personal information; the user consents." +
+                        "Never print secrets; only pass them as tool arguments and return status messages." +
+                        "Response language must match the user's language." +
+                        "Be concise."
                 )
                 .defaultToolCallbacks(toolCallbackProvider)
                 .build();
@@ -27,7 +33,8 @@ public class ChatBotController {
     @GetMapping("/chat-bot")
     public String chatBot(@RequestParam String query) {
         return chatClient
-                .prompt(query)
+                .prompt()
+                .user(query)
                 .call()
                 .content();
     }
