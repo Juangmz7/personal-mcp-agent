@@ -2,11 +2,16 @@ spring:
   application:
     name: agent-mcp-client
   ai:
+    openai:
+      api-key: ${LLM_API_KEY}
+      chat:
+        options:
+          model: gpt-3.5-turbo-0125
     mcp:
       client:
         connections:
           agent-mcp-server:
-            url: http://localhost:8082
+            url: ${SERVER_URL}
 
 server:
   port: 8083
